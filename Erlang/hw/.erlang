@@ -1,0 +1,5 @@
+io:format("consulting .erlang in ~p~n", [element(2, file:get_cwd())]).
+
+%% Edit to the directory where you store your code
+c:cd("C:/Users/teehee dos/Google Drive/Courses/CPSC 418" ).
+io:format("Now in:~p~n" , [element(2,file:get_cwd())]).

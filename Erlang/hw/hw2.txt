@@ -1,0 +1,45 @@
+Yelnil Gabo
+70179064
+g3d6
+
+1. 
+a ) code
+b ) code
+c ) i.    max_tr is faster ( around 20% faster with a largest N tested)
+    ii.   The difference is more significant when the lists are bigger.
+    iii.  The relative difference depends on the length of the list since
+          head recursion has to track back to finish up all the function calls
+          This means that whenever the length of the list increases, the head recursion
+          has double the work relative to the tail recursions work.
+      
+
+2.
+a ) From the plot in hw2_plot2a.png, it can be seen that there is a slight dip at when n was around 2000.
+		An educated guess on what n_0 would be around there. So I would say, given the plot/data n_0 ~ 2000.
+b ) To determine the message overhide time, I had to run 2 versions of a function.
+      The first one was to determine how much time it takes for Erlang to spawn 2 processes
+      and finish. The second version was Erlang spawning 2 processes and then both of them 
+      sending a message to each other. The difference was around 2 microseconds( 2*10^-6 seconds.)
+      Which means the message overhead to send one message without doing any other work
+      is around 1 microsecond. Data is available in hw2_data.txt.    
+c )	To find the two slopes, t1 and u1, we need to figure out the rate of change before and after Erlang split
+	  to two threads. From n = 500 to 1500, the rate of change is 1.48801597e-7. So that would be t1 = 1.48801597e-7.
+    From n = 3000 to 4000, the rate of change is 4.77225664e-8, and that would be u1 = 4.77225664e-8. Notice, u1
+    is closer to 0, so in a sense it is less steep than t1.
+
+
+3.
+a ) code
+b ) T_sequential / T_parallel = 0.5
+    I found that the parallel code was half as slow given 64 workers and only ~500,000 elements.
+    I kind of expected this result as there were too many workers that the program was working with.
+    With too many workers, the overhead of setting up, sending messages to all 64 workers and then
+    receiving back the data and then processing it; 64 workers was too much work compared to the sequential
+    program.
+    Although, at 10 workers only, the speedup was around 1.86. 
+c ) I ran with the folling cores: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,25,75,125,175,200,256]
+    I could see there was decreasing time at first and it hit the minimum at around 4 cores.
+    It went stead for 5,6,7 and around 8 as well. From there on then, everytime the number of cores
+    increased, the time took to finish was increasing with it as well. This isn't really the value I 
+    was expecting, I thought it would minimize around 8-12 cores. It might have to do with the small
+    data set that we had to work with and the overhead of more than 4 cores overtook the run time total.

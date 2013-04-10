@@ -1,0 +1,171 @@
+-module(scan).
+-export([distribute/3, distribute_pos/4]).
+-export([scan_total/2, largest_gap_seq/1, largest_gap_seq/2]).
+-export([largest_gap_w/1, largest_gap_w/2, bigger_pair/4, smaller/2, bigger/2]).
+-export([ randomlist/2, randomlist/3 ]).
+-export([total/1, total/2, total/3, moving_tot/1, moving_tot/3 ]).
+% Yelnil Gabo
+% 70179064
+% g3d6
+
+% 1) a.
+
+scan_total(W,Key) ->
+  wtree:scan(W,
+    fun(ProcState) -> workers:get(ProcState, Key) end,
+    fun(ProcState, L ) ->
+      M = 2,
+      List = workers:get(ProcState, Key),
+      N = max(0,length(L) - M)
+      if
+        L == [] -> workers:put( ProcState, Key, {List, []} );
+        true -> 
+          if 
+            length(L) < M -> workers:put( ProcState, Key, {List, L} );
+            true -> workers:put( ProcState, Key, {List, lists:nthtail(M,L)} )
+          end
+      end end,
+    fun(L,R) -> L++R end,   
+    []).
+
+moving_tot([]) -> [];
+moving_tot([T]) -> [T];
+moving_tot([H|T]) -> moving_tot([H|T], [], 0).
+moving_tot([], X, Last) -> X;
+moving_tot([H|T], X, Last) -> moving_tot(T, (X ++ [Last+H]), Last+H).
+
+% wrapper for largest gap
+% creates workers, sets up the list
+% and calls largest_gap
+% best to call gap_wrap(N, P, KEY)
+% prints out time for sequential
+% then the parallel version
+total(LIST) -> total(LIST, 8).
+total(LIST, P) -> total(LIST, P, 'lol').
+total(LIST, P, KEY) ->  
+  L = [1,2,3,4,1,2,3,4,1,2,3,4],
+  misc:print(L),
+  %List = randomlist(10,10), % list from root until max
+  %Pos = lists:seq( 1, length(L)),
+  Distributed_List = distribute( P, L, length(L) ), % divide the list into equal parts for each worker
+  %Distributed_Pos = distribute( P, Pos, length(Pos) ),
+  %Combined_list_with_pos = lists:zip(Distributed_Pos,Distributed_List),
+  W = wtree:create(P),
+  workers:broadcast( W, fun(ProcState, X) -> workers:put(ProcState, KEY, X) end, Distributed_List ), 
+  Toll = (workers:retrieve(W, fun(ProcState) -> workers:get(ProcState, KEY) end)),
+  misc:print(Toll),  
+  S = scan_total(W, KEY),
+  Till = (workers:retrieve(W, fun(ProcState) -> workers:get(ProcState, KEY) end)),
+  wtree:reap(W),
+  Till.
+  
+% helper
+% get largest gap but with a weird twist
+% return largest and smallest element of the list too
+% A = smallest element of current list
+% B = biggest element of current list
+% C,D = pair with biggest gap
+% return {C,D,A,B}
+largest_gap_w([]) -> [];
+largest_gap_w([X]) -> {X,X,X,X};
+largest_gap_w([H|T]) -> largest_gap_w( [H|T], {H, hd(T), H, hd(T)} ).
+largest_gap_w([], {X,Y,A,B}) -> {X,Y,A,B};
+largest_gap_w([T], {X,Y,A,B}) ->
+  F = bigger(T,B),
+  {X,Y,A,F};
+largest_gap_w([H|T], {X,Y,A,B}) -> 
+  {C,D} = bigger_pair(H, hd(T), X, Y),
+  E = smaller(H,A),
+  F = bigger(H,B),
+  largest_gap_w(T,{C,D,E,F}).
+
+% helper
+% return smaller number
+smaller(A,B) ->
+  if
+    A > B -> B;
+    true -> A
+  end.
+
+% helper 
+% return bigger number
+bigger(A,B) ->
+  if
+    A > B -> A;
+    true -> B
+  end.
+
+% helper
+% return pair with bigger gap
+bigger_pair(A,B,C,D) ->
+  if
+    ( (B - A) >= (D - C) ) -> {A,B};
+    true  -> {C,D}
+  end.
+
+% 4) d.
+% sequential largest gap
+largest_gap_seq([]) -> [];
+largest_gap_seq([_]) -> [];
+largest_gap_seq([H|T]) -> largest_gap_seq( [H|T], {H, hd(T)} ).
+largest_gap_seq([], {X,Y}) -> {X,Y};
+largest_gap_seq([_], {X,Y}) -> {X,Y};
+largest_gap_seq([H|T], {X,Y}) ->
+  if
+    ( (hd(T) - H ) > (Y - X) ) -> largest_gap_seq(T, {H, hd(T)});
+    true  -> largest_gap_seq(T, {X,Y})
+  end.
+
+% random list
+% L is length
+% 0 to N
+randomlist(L, N) when L > 0, N > 0 ->
+randomlist(L, N, random:seed0()).
+
+randomlist(It, N, S) when It > 0 ->
+{Num,S1} = random:uniform_s(N, S),
+[Num | randomlist(It-1, N, S1)];
+randomlist(0, _, _) ->
+[].
+
+% helper
+% divide a list into sublists
+% divide equally according to number of workers
+distribute(0, _List, _) -> [];
+distribute(NW, List, Length) ->
+  N1 = round(Length/NW),                 % elements to give to this worker
+  N2 = Length - N1,
+  X = lists:sublist(List, N1),
+  Y = lists:sublist(List, N1+1, Length),  % elements left for others
+  [X | distribute(NW-1, Y, N2)].  % give rest of list to other workers
+  
+% helper
+% divide a list into sublists
+% divide equally according to number of workers
+% zip with positions
+distribute_pos(0, _List, _Pos, _) -> [];
+distribute_pos(NW, List, Pos, Length) ->
+  N1 = round(Length/NW),                 % elements to give to this worker
+  N2 = Length - N1,
+  A = lists:sublist(Pos, N1),
+  B = lists:sublist(Pos, N1+1, Length),  % elements left for others
+  X = lists:sublist(List, N1),
+  Y = lists:sublist(List, N1+1, Length),  % elements left for others
+  [ {A,X} | distribute_pos(NW-1, Y, B, N2)].  % give rest of list to other workers
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  

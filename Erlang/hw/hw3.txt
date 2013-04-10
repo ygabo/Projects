@@ -1,0 +1,197 @@
+﻿Yelnil Gabo
+70179064
+g3d6
+
+
+1)
+a.
+STEP        PC0        PC1        FLAG0        FLAG1        TURN        PERFORM
+0        0        0        false        false        0        pc1 = 0        while(true){        
+1        0        1        false        false        0        pc1 = 1         non-critical code
+2        0        2        false        true        0        pc1 = 2         flag[1] = true;
+3        0        3        false        true        0        pc1 = 3         if(flag[0]) {
+4        0        3        false        true        0        pc0 = 0         while(true){
+5        1        3        false        true        0        pc0 = 1         non-critical code
+6        2        3        false        true        0        pc0 = 2         flag[1] = true;
+7        3        3        true        true        0        pc0 = 3        if(flag[1]) {
+8        3        10        true        true        0        pc1 = 10        critical code
+9        4        10        true        true        0        pc0 = 4        if(turn != 1)
+10        5        10        true        true        0        pc0 = 5        flag[0] = false;
+11        6        10        false        true        0        pc0 = 6        while(turn != 0);
+12        7        10         false        true        0        pc0 = 7        flag[0] = true;
+13        10        10        true        true        0        pc0 = 10        critical condition
+
+pc1 = pc0 = 10
+
+b.
+Normally, on pc=3, the thread that passes will be looping, waiting. While the other thread that failed the test can go through to the critical section. The revised version uses an if; It doesnt loop, so it lets the thread that passed go to the critical section as well.
+
+
+2)
+a. 
+o is 1-k,
+I = All k in {0,1}.
+  flag[k] = (3 <= PC_k <= 9 )
+^ ((6 <= PC_k <= 8 ) ^ ~tmp_k) => ( ~flag[o] v (turn = k) v (PC_o = 3) )
+^ ( PC_k = 8 ) => ~tmp_k
+
+- I holds initially
+- PC that doesn't modify the flag[k] are PC that are not in { 2,10 }
+- Thus they maintain the clause connecting the value of flag[k] to PC_k
+e.g. if PC_k = 0
+- I implies that flag[k] = false
+- Executing while( true ) { sets PC_k = 1
+- this doesn't change flag[k]'s value, which is false
+- Thus, I continues to hold
+- Similar reasoning used for PC's that do change flag[k]
+Now consider when PC_0 = 8 
+- which means PC_0 was 7 beforehand, and failed the while check
+- so tmp_0 was false
+- then I continues to hold, this reasoning also applies to PC_1 = 8
+Now, from above, since PC_0 = 8 and tmp_0 false, ((6 <= PC_0 <= 8 ) ^ ~tmp_0) is true
+- for the invariant to continue to hold, ~flag[1] v (turn = 0) v (PC_1 = 3) must hold true
+- assume ~flag[1] v (turn = 0) v (PC_1 = 3) isn’t true
+- ~(~flag[1] v (turn = 0) v (PC_1 = 3)) we get (flag[1] ^ ~(turn = 0) ^ ~(PC_1 = 3 ))
+- so flag[1] is true, it means PC_1 is 3 <= PC_1 <= 9
+- it also says PC_1 != 3, so 4 <= PC_1 <= 9 
+- we also have ~(turn = 0), turn is not 0
+-  but since tmp_0 is basically flag[1] && (turn == 1), we have a contradiction
+- tmp_0 is both true and false
+- (~flag[1] v (turn = 0) v (PC_1 = 3)) is true
+- This also applies to the other side(PC_1 = 8)
+Therefore, the I is maintained by all actions of both threads
+I is an invariant.
+
+b.
+I => ~((pc_0 == 8) ^ (pc_1 == 8))
+Assume it’s not true
+~~((pc_0 == 8) ^ (pc_1 == 8))
+So (pc_0 == 8) ^ (pc_1 == 8)
+Attach that to the original:
+
+flag[k] = (3 <= pc_k <= 9 )
+^ ((6 <= pc_k <= 8 ) ^ ~tmp_k) => ( ~flag[o] v (turn = k) v (pc_o = 3) )
+^ ( pc_k = 8 ) => ~tmp_k
+^ (pc_0 == 8) ^ (pc_1 == 8)
+
+pc_k = 8 is basically true
+
+flag[k] = (3 <= pc_k <= 9 )
+^ ( TRUE ^ ~tmp_k) => ( ~flag[o] v (turn = k) v (pc_o = 3) )
+^ TRUE => ~tmp_k
+^ (pc_0 == 8) ^ (pc_1 == 8)
+
+We can tidy it 
+
+flag[k] = (3 <= pc_k <= 9 )
+^ ( TRUE ^ ~tmp_k) => ( ~flag[o] v (turn = k) v (pc_o = 3) )  ------- So ~tmp_k is TRUE
+^ ~tmp_k
+^ (pc_0 == 8) ^ (pc_1 == 8)
+
+flag[k] = (3 <= pc_k <= 9 )
+^ ( ~flag[o] v (turn = k) v (pc_o = 3) ) -- pc_o is not 3, for both cases
+^ ~tmp_k
+^ (pc_0 == 8) ^ (pc_1 == 8)
+
+Expand k
+
+flag[0] = TRUE
+flag[1] = TRUE
+^  (turn = 0)     -- also got rid of ~flag[k] since we know that it's false
+^  (turn = 1) 
+^ ~tmp_0
+^ ~tmp_1
+^ (pc_0 == 8)
+^ (pc_1 == 8)
+
+Now, for pc_1 == 8, tmp_1 must have been false to get out of the do_while loop
+for tmp_1 to be false, it must be that flag[0] is false or (turn == 1) is false, 
+but flag[0] is TRUE
+and turn == 1 is TRUE
+Contradiction
+This is also true for pc_0 == 8.
+Therefore, the invariant, I, does ensure mutual exclusion.
+
+
+3)
+a.
+N is m^2
+all i <m/2 processors sending to all i >= m/2 
+N/2 processors on one side, N/2 on the other
+N^2 / 4 total messages being sent
+There are only m links connecting from one half to the other
+m links -> root(N) or N^(1/2)
+So, to cross the plane that cuts through the m links we need to send
+[ ( (N^2)/4 ) / N^(1/2) ] = [N^(3/2)]/4 batches
+each batch can go together, it takes one unit time to send one batch
+(basically crossing a link, m links at the same time)
+Takes O(N^3/2) to send the entire batch
+
+b.
+-N = m^d processors arranged in a d-dimensional mesh
+-i_0 < m/2 on one half i_0 >= m/2 on the other half
+-basically means N/2 on one side, N/2 on the other
+-N^2/4 messages need to be sent
+-Need to figure out how many links go from one side to the other side
+-Imagine a plane that cuts through half of this mesh.
+-There will be m^(d-1) links that pass through this mesh
+e.g. m = 2, 4-D then 2^3=8 links passing through
+-With same reasoning as (a) We need to do (N^2)/4 / m^(d-1) batches
+of messages need to pass through the links(the one that goes through the plane)
+-but m^(d-1) is (m^d)/m -> N/m
+- also m is d-root(N), so m^(d-1) is N/ d-root(N)
+-So, [((N^2)/4) / (N/d-root(N))] = N * N^(1/d) --- I dropped the constant
+-Therefore, it takes O( N^(1+1/d) ) time units to send all the messages
+  
+c.
+Same reasoning as b. 
+Have to realize that the worst arrangement is all A in one side and B on another side.
+So using b’s calculations
+-N^2/4 messages need to be sent
+- N/(N^1/d) links
+-We need to do (N^2)/4 / m^(d-1) batches
+-So, [((N^2)/4) / (N/d-root(N))] = N * N^(1/d)
+-Therefore, it takes O( N^(1+1/d) ) time units to send all the messages for this instance as well
+
+d.
+-So we know there are N^(1-1/d) links crossing the plane passing through the mesh
+-This comes from N/d-root(N)
+- N^(1-1/d) is the area, so that means to get 1 dimension of the area, you have square root
+- root(N^(1-1/d)) = N^((1 - 1/d)/2)
+- this means to get the volume you do dimension*dimensionx*dimension
+- N^((1 - 1/d)/2)*N^((1 - 1/d)/2)*N^((1 - 1/d)/2) = N^((3/2)*(1-1/d))
+Volume O( N^((3/2)*(1-1/d)) )
+
+
+4)
+a. code
+
+b. 
+hw3:sum_wrap(30000000, 64).
+1.041256
+0.040564
+ok
+-Speedup is defined as T_seq / T_par so with the numbers I received by running my code in gambier
+I get a speed up of 0.040564 / 1.041256 = 25.6694606055
+hw3:sum_wrap(8000000, 64).
+0.284377
+0.014418
+ok
+hw3:sum_wrap(8100000, 64).
+0.288544
+0.014309
+ok
+- 80% of 25.669 is around ~20, by having N around ~8 million the speedup was .288544/.014309 = 20.1652107065.
+
+c. code
+
+d. 
+hw3:gap_wrap(26000000,64).
+1.027709
+0.08868125
+With N at 26 million, I get a speedup of 1.027709 / 0.08868125 = 11.5887969554
+hw3:gap_wrap(5000000,64). 
+0.2115268
+0.022819954545454546
+With N around 5 mill, the speedup was 0.2115268/0.022819954545454546 = 9.26937867377 
+which is around 80% of 11.5887...

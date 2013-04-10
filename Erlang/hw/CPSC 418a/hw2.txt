@@ -1,0 +1,9 @@
+1.c)
+i. max_tr is faster
+ii. The difference is more significant when the lists are bigger.
+iii. The relative difference depends on the length of the list since
+	head recursion has to track back to finish up all the function calls
+	This means that whenever the length of the list increases, the head recursion
+	has double the work relative to the tail recursions work.
+	
+

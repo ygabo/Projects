@@ -1,0 +1,14 @@
+I'm rereading the notes from Oct 9 (see attached). I have a couple questions from it.(I can't wrap my head around how the N values were derived and some other stuff.)
+
+What is dimension routing? I see its just sending a message from a source node to a destination node, but the for-loop is kind of confusing. Is it just saying if destination node is on another dimension(say 3rd dimension, with respect to the source node), send this message to the source node's 3rd dimension neighbor? (Does the neighbor we sent the message to, know how to handle where to send the message?)
+
+So, we're letting each node send a message to each of the other nodes. Ok, I get that part. Now where does N/2 come from? (Each node will send N/2 messages for each of the d dimensions) From the previous example of a 5D torus, from a given source node, do we send 16 messages to the nodes connected to it from 0D, then another 16 to 1D, and another 16 to 2D.. etc? 
+
+I see \binom{N}{2} is from the different combination of two nodes out of the total N nodes. So this represents the different number of combinations of source and destination messages, right? 
+
+So we have a plane that cuts the hypercube in half. One side with N/2 nodes. Only \frac{1}{2} \binom{N}{2} messages cross this plane since the other half is meant for their own side, correct? Where is N-1 links coming from? Area of O(N), how is that derived? 
+
+
+
+
+

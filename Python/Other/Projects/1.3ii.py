@@ -1,0 +1,50 @@
+import numpy as np
+import matplotlib.pyplot as pl
+
+def load_patches(images, n=10000, p=20):
+    rand = np.random.RandomState(seed=0)
+    X = np.empty((n, p**2))
+    m, d, _ = images.shape
+    for i in xrange(n):
+        x, y = rand.randint(d-p, size=2)
+        j = rand.randint(m)
+        X[i,:] = images[j, y:y+p, x:x+p].flat
+    return X
+
+images = np.load('images.npy')
+fig    = pl.figure()
+X      = load_patches(images)
+
+pl.set_cmap(pl.cm.Greys_r)
+
+#SVD
+U,S,VT = np.linalg.svd(X, full_matrices=False)
+coeff  = np.dot(U[0], S)
+
+#absolute value the coeffecients
+for i in xrange(coeff.size):
+    if coeff[i] < 0:
+        coeff[i] = coeff[i] * -1 
+
+#sort
+sorted_coeff      = np.argsort(coeff)
+sorted_coeff_desc = sorted_coeff[::-1]
+
+#plot first patch
+t = fig.add_subplot(2,1,1)
+t.imshow( X[0].reshape(20,20) )
+t.set_title('X[0]')
+t.xaxis.set_visible(False)
+t.yaxis.set_visible(False)
+
+#plot the patches with highest coeff
+#with regards to first patch
+for i in xrange(5):
+    t = fig.add_subplot( 2,5, 6+i )
+    t.imshow( VT[ sorted_coeff_desc[i] ].reshape(20,20) )
+    t.set_title( round( coeff[sorted_coeff_desc[i]], 6) )
+    t.xaxis.set_visible(False)
+    t.yaxis.set_visible(False)
+
+pl.show()
+

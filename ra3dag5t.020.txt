@@ -1,0 +1,101 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+	deleted:    MPI and ERLANG/.erlang
+	deleted:    MPI and ERLANG/1bc2.c
+	deleted:    MPI and ERLANG/CPSC 418a (1)/documents-export-2012-09-19.zip
+	deleted:    MPI and ERLANG/CPSC 418a (1)/erl_crash.dump
+	deleted:    MPI and ERLANG/CPSC 418a (1)/hw1.beam
+	deleted:    MPI and ERLANG/CPSC 418a (1)/hw1.erl
+	deleted:    MPI and ERLANG/CPSC 418a (1)/hw1.txt
+	deleted:    MPI and ERLANG/CPSC 418a (1)/hw1.zip
+	deleted:    MPI and ERLANG/CPSC 418a (1)/hw2.beam
+	deleted:    MPI and ERLANG/CPSC 418a (1)/hw2.erl
+	deleted:    MPI and ERLANG/CPSC 418a (1)/hw2.txt
+	deleted:    MPI and ERLANG/CPSC 418a (1)/hw2_data.txt
+	deleted:    MPI and ERLANG/CPSC 418a (1)/time_it.beam
+	deleted:    MPI and ERLANG/CPSC 418a (1)/time_it.erl
+	deleted:    MPI and ERLANG/CPSC 418a/documents-export-2012-09-19.zip
+	deleted:    MPI and ERLANG/CPSC 418a/erl_crash.dump
+	deleted:    MPI and ERLANG/CPSC 418a/hw1.beam
+	deleted:    MPI and ERLANG/CPSC 418a/hw1.erl
+	deleted:    MPI and ERLANG/CPSC 418a/hw1.txt
+	deleted:    MPI and ERLANG/CPSC 418a/hw1.zip
+	deleted:    MPI and ERLANG/CPSC 418a/hw2.beam
+	deleted:    MPI and ERLANG/CPSC 418a/hw2.erl
+	deleted:    MPI and ERLANG/CPSC 418a/hw2.txt
+	deleted:    MPI and ERLANG/CPSC 418a/hw2_data.txt
+	deleted:    MPI and ERLANG/CPSC 418a/time_it.beam
+	deleted:    MPI and ERLANG/CPSC 418a/time_it.erl
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC.htm
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/computer-science-logo.png
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/css_222feafb86bbe96aea2dbed892838a89.css
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/css_8acc2947d0d58ddeed497858e7ae45f1.css
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/default+en.I.js
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/default+en.css
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/ga.js
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/jquery-ui.min.js
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/jquery.min.js
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/js_46fd1658fcdbf8334829771b9c74d82c.js
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/js_7ae9dd376f91eeb4fa0392341750941f.js
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/jsapi
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/logo.gif
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/saved_resource
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/topper-search-right-round.gif
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/topper-search.gif
+	deleted:    MPI and ERLANG/Saved webpages/Assignment 2 Question 3   Computer Science at UBC_files/ubccs_empty_room_list.css
+	deleted:    MPI and ERLANG/Saved webpages/CPSC 448B  erlang modules.htm
+	deleted:    MPI and ERLANG/Saved webpages/CPSC 448B  erlang modules_files/boot_min.js
+	deleted:    MPI and ERLANG/Saved webpages/CPSC 448B  erlang modules_files/default.css
+	deleted:    MPI and ERLANG/Saved webpages/CPSC 448B  erlang modules_files/pman.js
+	deleted:    MPI and ERLANG/Saved webpages/Running MPI on UBC CS ugrad linux machines.htm
+	deleted:    MPI and ERLANG/Saved webpages/Running MPI on UBC CS ugrad linux machines_files/boot_min.js
+	deleted:    MPI and ERLANG/Saved webpages/Running MPI on UBC CS ugrad linux machines_files/pman.js
+	deleted:    MPI and ERLANG/backupscan2.txt
+	deleted:    MPI and ERLANG/backupscna.txt
+	deleted:    MPI and ERLANG/erl_crash.dump
+	deleted:    MPI and ERLANG/hw1/hw1.beam
+	deleted:    MPI and ERLANG/hw1/hw1.erl
+	deleted:    MPI and ERLANG/hw1/hw1.txt
+	deleted:    MPI and ERLANG/hw1/hw1.zip
+	deleted:    MPI and ERLANG/hw2.beam
+	deleted:    MPI and ERLANG/hw2.erl
+	deleted:    MPI and ERLANG/hw2.txt
+	deleted:    MPI and ERLANG/hw2.zip
+	deleted:    MPI and ERLANG/hw2[Conflict].beam
+	deleted:    MPI and ERLANG/hw2[Conflict].erl
+	deleted:    MPI and ERLANG/hw2_data.txt
+	deleted:    MPI and ERLANG/hw2_plot.png
+	deleted:    MPI and ERLANG/hw2_plot2a.png
+	deleted:    MPI and ERLANG/hw3.7z
+	deleted:    MPI and ERLANG/hw3.beam
+	deleted:    MPI and ERLANG/hw3.erl
+	deleted:    MPI and ERLANG/hw3.txt
+	deleted:    MPI and ERLANG/hw3.txt (1).gdoc
+	deleted:    MPI and ERLANG/hw3.txt (2).gdoc
+	deleted:    MPI and ERLANG/hw3.txt.gdoc
+	deleted:    MPI and ERLANG/hw3.zip
+	deleted:    MPI and ERLANG/hw3/hw3.erl
+	deleted:    MPI and ERLANG/hw3/hw3.txt
+	deleted:    MPI and ERLANG/hw3[Conflict 1].erl
+	deleted:    MPI and ERLANG/hw3[Conflict].erl
+	deleted:    MPI and ERLANG/hw4 (1).beam
+	deleted:    MPI and ERLANG/hw4 (1).erl
+	deleted:    MPI and ERLANG/hw4 (2).beam
+	deleted:    MPI and ERLANG/hw4 (2).erl
+	deleted:    MPI and ERLANG/hw4 (3).erl
+	deleted:    MPI and ERLANG/hw4 (4).erl
+	deleted:    MPI and ERLANG/hw4 (5).erl
+	deleted:    MPI and ERLANG/hw4.beam
+	deleted:    MPI and ERLANG/hw4.c
+	deleted:    MPI and ERLANG/hw4.erl
+	deleted:    MPI and ERLANG/hw4.txt
+	deleted:    MPI and ERLANG/hw4/hw4.c
+	deleted:    MPI and ERLANG/hw4/hw4.erl
+	deleted:    MPI and ERLANG/hw4/hw4.pdf
+
+
